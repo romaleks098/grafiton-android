@@ -6,17 +6,19 @@
     <title>Графитон — Мессенджер</title>
     <style>
         :root {
-            --bg-color: #121820;
-            --surface-color: #1c2530;
-            --surface-secondary: #273444;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --incoming-bubble: #1e293b;
-            --outgoing-bubble: #2563eb;
-            --online-badge: #10b981;
+            --bg-color: #0e1621;
+            --surface-color: #17212b;
+            --surface-secondary: #202b36;
+            --surface-hover: #242f3d;
+            --primary: #2b5278;
+            --primary-accent: #5288c1;
+            --text-main: #f5f5f5;
+            --text-muted: #7f91a4;
+            --border-color: #101921;
+            --incoming-bubble: #182533;
+            --outgoing-bubble: #2b5278;
+            --online-badge: #4fae4e;
+            --tab-active: #5288c1;
         }
 
         * {
@@ -28,7 +30,7 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: #080d14;
             color: var(--text-main);
             height: 100vh;
             display: flex;
@@ -44,10 +46,9 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 0 24px rgba(0,0,0,0.5);
+            box-shadow: 0 0 24px rgba(0,0,0,0.6);
         }
 
-        /* Screens */
         .screen {
             display: none;
             flex-direction: column;
@@ -66,42 +67,31 @@
             justify-content: center;
             padding: 32px 24px;
             height: 100%;
+            overflow-y: auto;
         }
 
         .app-logo {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
         .app-logo .logo-icon {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            border-radius: 20px;
+            width: 76px;
+            height: 76px;
+            background: linear-gradient(135deg, #2b5278, #5288c1);
+            border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
+            font-size: 38px;
             font-weight: bold;
             color: white;
             margin: 0 auto 16px;
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
-        }
-
-        .app-logo h1 {
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .app-logo p {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-top: 4px;
+            box-shadow: 0 8px 24px rgba(82, 136, 193, 0.35);
         }
 
         .input-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .input-group label {
@@ -111,73 +101,49 @@
             margin-bottom: 6px;
         }
 
-        .input-group input {
+        .input-group input, .input-group textarea {
             width: 100%;
-            padding: 12px 16px;
+            padding: 12px 14px;
             background-color: var(--bg-color);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 10px;
             color: var(--text-main);
             font-size: 15px;
             outline: none;
             transition: border-color 0.2s;
         }
 
-        .input-group input:focus {
-            border-color: var(--primary);
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--primary-accent);
         }
 
         .btn-primary {
             width: 100%;
-            padding: 14px;
-            background-color: var(--primary);
+            padding: 13px;
+            background-color: var(--primary-accent);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: opacity 0.2s;
             margin-top: 10px;
         }
 
         .btn-primary:active {
-            background-color: var(--primary-hover);
+            opacity: 0.85;
         }
 
-        .toggle-auth {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-
-        .toggle-auth span {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* Server Settings Modal */
-        .server-url-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 12px;
-            margin-top: 16px;
-            text-align: center;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
-        /* Header */
+        /* Top Header */
         .app-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 14px 16px;
-            background-color: var(--surface-secondary);
+            padding: 12px 16px;
+            background-color: var(--surface-color);
             border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
         }
 
         .header-title-box {
@@ -194,16 +160,70 @@
         .btn-icon {
             background: none;
             border: none;
-            color: var(--text-main);
+            color: var(--text-muted);
             font-size: 20px;
             cursor: pointer;
-            padding: 4px;
+            padding: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
         }
 
-        /* Chat list */
+        .btn-icon:active {
+            background-color: var(--surface-hover);
+            color: var(--text-main);
+        }
+
+        /* Telegram-style Tabs */
+        .telegram-tabs {
+            display: flex;
+            background-color: var(--surface-color);
+            border-bottom: 2px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .tg-tab {
+            flex: 1;
+            padding: 12px 0;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tg-tab.active {
+            color: var(--tab-active);
+        }
+
+        .tg-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--tab-active);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-badge {
+            background-color: var(--primary-accent);
+            color: white;
+            font-size: 11px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        /* List views */
         .chat-list {
             flex: 1;
             overflow-y: auto;
@@ -212,24 +232,24 @@
         .chat-item {
             display: flex;
             align-items: center;
-            padding: 14px 16px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
             cursor: pointer;
             transition: background 0.15s;
         }
 
         .chat-item:active {
-            background-color: var(--surface-secondary);
+            background-color: var(--surface-hover);
         }
 
         .avatar {
-            width: 46px;
-            height: 46px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 18px;
             margin-right: 14px;
             flex-shrink: 0;
@@ -258,20 +278,21 @@
             margin-top: 3px;
         }
 
-        /* Message Area */
+        /* Message Conversation Area */
         .messages-container {
             flex: 1;
             overflow-y: auto;
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
+            background-color: var(--bg-color);
         }
 
         .message-bubble {
-            max-width: 78%;
-            padding: 10px 14px;
-            border-radius: 16px;
+            max-width: 80%;
+            padding: 9px 13px;
+            border-radius: 12px;
             position: relative;
             word-wrap: break-word;
             line-height: 1.4;
@@ -281,34 +302,33 @@
         .msg-incoming {
             align-self: flex-start;
             background-color: var(--incoming-bubble);
-            border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 2px;
         }
 
         .msg-outgoing {
             align-self: flex-end;
             background-color: var(--outgoing-bubble);
-            border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 2px;
         }
 
         .msg-sender {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
-            color: #60a5fa;
+            color: var(--primary-accent);
             margin-bottom: 2px;
         }
 
         .msg-time {
-            font-size: 10px;
-            color: var(--text-muted);
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
             float: right;
             margin-left: 8px;
             margin-top: 4px;
         }
 
-        /* Input Bar */
         .input-bar {
-            padding: 10px 14px;
-            background-color: var(--surface-secondary);
+            padding: 8px 12px;
+            background-color: var(--surface-color);
             border-top: 1px solid var(--border-color);
             display: flex;
             align-items: center;
@@ -330,7 +350,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: var(--primary);
+            background-color: var(--primary-accent);
             border: none;
             color: white;
             display: flex;
@@ -338,25 +358,56 @@
             justify-content: center;
             cursor: pointer;
             flex-shrink: 0;
-            transition: background 0.2s;
+            font-size: 17px;
         }
 
-        .btn-send:active {
-            background-color: var(--primary-hover);
+        /* Settings Screen (Telegram style) */
+        .settings-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 16px;
         }
 
-        /* Status Toast */
+        .settings-profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--surface-secondary);
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .color-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-circle.selected {
+            border-color: white;
+            transform: scale(1.15);
+        }
+
         #toast {
             position: absolute;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #dc2626;
+            background: #2b5278;
             color: white;
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 20px;
             font-size: 13px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             display: none;
             z-index: 100;
         }
@@ -372,18 +423,18 @@
         <div class="auth-container">
             <div class="app-logo">
                 <div class="logo-icon">Г</div>
-                <h1>Графитон</h1>
-                <p>Быстрый и защищённый мессенджер</p>
+                <h1 style="font-size: 24px; font-weight: 700;">Графитон</h1>
+                <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;">Мессенджер без блокировок и VPN</p>
             </div>
 
             <div class="input-group">
-                <label>Логин / Юзернейм</label>
-                <input type="text" id="auth-username" placeholder="Например: ivan" />
+                <label>Юзернейм (логин)</label>
+                <input type="text" id="auth-username" placeholder="Например: alex" />
             </div>
 
             <div class="input-group" id="group-nickname" style="display: none;">
-                <label>Ваше имя (Никнейм)</label>
-                <input type="text" id="auth-nickname" placeholder="Иван Иванов" />
+                <label>Отображаемое имя (Никнейм)</label>
+                <input type="text" id="auth-nickname" placeholder="Александр" />
             </div>
 
             <div class="input-group">
@@ -393,49 +444,109 @@
 
             <button class="btn-primary" id="btn-auth-submit" onclick="handleAuthSubmit()">Войти</button>
 
-            <div class="toggle-auth" onclick="toggleAuthMode()">
-                <span id="auth-toggle-text">Создать новый аккаунт</span>
+            <div style="text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted); cursor: pointer;" onclick="toggleAuthMode()">
+                <span id="auth-toggle-text" style="color: var(--primary-accent); font-weight: 600;">Создать новый аккаунт</span>
             </div>
 
-            <button class="server-url-btn" onclick="promptServerUrl()">Настройки сервера (Render)</button>
+            <div style="margin-top: 25px; text-align: center;">
+                <button style="background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; text-decoration: underline;" onclick="promptServerUrl()">Настройки прокси / сервера</button>
+            </div>
         </div>
     </div>
 
-    <!-- 2. CHATS SCREEN -->
-    <div id="screen-chats" class="screen">
+    <!-- 2. MAIN SCREEN WITH TELEGRAM-STYLE TABS -->
+    <div id="screen-main" class="screen">
         <div class="app-header">
             <div class="header-title-box">
-                <div class="avatar" id="my-avatar" style="width: 34px; height: 34px; font-size: 14px;">?</div>
+                <div class="avatar" id="my-top-avatar" style="width: 36px; height: 36px; font-size: 15px;" onclick="openSettings()">?</div>
                 <div>
                     <div class="header-title">Графитон</div>
                     <div style="font-size: 11px; color: var(--online-badge);" id="connection-status">● В сети</div>
                 </div>
             </div>
-            <button class="btn-icon" onclick="logout()" title="Выйти">🚪</button>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-icon" onclick="openSettings()" title="Настройки аккаунта">⚙️</button>
+            </div>
         </div>
 
+        <!-- Telegram-like tabs -->
+        <div class="telegram-tabs">
+            <div class="tg-tab active" id="tab-all" onclick="switchTab('all')">
+                Все <span class="tab-badge" id="badge-all">1</span>
+            </div>
+            <div class="tg-tab" id="tab-direct" onclick="switchTab('direct')">
+                Личные
+            </div>
+            <div class="tg-tab" id="tab-channels" onclick="switchTab('channels')">
+                Каналы
+            </div>
+        </div>
+
+        <!-- Chat List container -->
         <div class="chat-list" id="chat-list-container">
-            <!-- General Chat item -->
-            <div class="chat-item" onclick="openChat('general', 'Общий чат')">
-                <div class="avatar" style="background: #3b82f6;">🌐</div>
+            <!-- Channel / Public -->
+            <div class="chat-item" id="item-general-chat" onclick="openChat('general', 'Общий канал', null, '#5288c1')">
+                <div class="avatar" style="background: #2b5278;">📢</div>
                 <div class="chat-info">
-                    <div class="chat-name">Общий канал</div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span class="chat-name">Общий канал</span>
+                        <span style="font-size: 11px; color: var(--text-muted);">Канал</span>
+                    </div>
                     <div class="chat-preview" id="general-preview">Сообщения для всех пользователей</div>
                 </div>
             </div>
-            <div style="padding: 10px 16px 4px; font-size: 12px; color: var(--text-muted); text-transform: uppercase;">
-                Личные сообщения
-            </div>
+
             <div id="users-list"></div>
         </div>
     </div>
 
-    <!-- 3. ACTIVE CHAT SCREEN -->
+    <!-- 3. SETTINGS / ACCOUNT PROFILE SCREEN -->
+    <div id="screen-settings" class="screen">
+        <div class="app-header">
+            <div class="header-title-box">
+                <button class="btn-icon" onclick="closeSettings()">‹</button>
+                <div class="header-title">Настройки аккаунта</div>
+            </div>
+            <button class="btn-icon" onclick="logout()" title="Выйти" style="color: #ef4444;">🚪</button>
+        </div>
+
+        <div class="settings-content">
+            <div class="settings-profile-card">
+                <div class="avatar" id="settings-avatar" style="width: 72px; height: 72px; font-size: 30px; margin-bottom: 12px; margin-right: 0;">?</div>
+                <div style="font-size: 18px; font-weight: 600;" id="settings-username-display">@username</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;" id="settings-registered-sub">В сети</div>
+
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 14px;">Цвет аватара:</div>
+                <div class="color-picker" id="color-picker-box"></div>
+            </div>
+
+            <div class="input-group">
+                <label>Имя профиля</label>
+                <input type="text" id="settings-nickname" placeholder="Ваше имя" />
+            </div>
+
+            <div class="input-group">
+                <label>О себе (Био)</label>
+                <textarea id="settings-bio" rows="2" placeholder="Расскажите о себе..."></textarea>
+            </div>
+
+            <button class="btn-primary" onclick="saveProfileChanges()">Сохранить изменения</button>
+
+            <div style="margin-top: 30px; padding: 14px; background-color: var(--surface-secondary); border-radius: 12px;">
+                <div style="font-size: 13px; font-weight: 600; color: var(--online-badge);">🛡️ Работа без VPN</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+                    Сервер использует прямое HTTPS / WSS подключение к Render с резервными портами, доступное у всех мобильных операторов и провайдеров РФ.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. ACTIVE CONVERSATION SCREEN -->
     <div id="screen-conversation" class="screen">
         <div class="app-header">
             <div class="header-title-box">
                 <button class="btn-icon" onclick="closeChat()">‹</button>
-                <div class="avatar" id="active-chat-avatar" style="width: 36px; height: 36px; font-size: 15px;">?</div>
+                <div class="avatar" id="active-chat-avatar" style="width: 38px; height: 38px; font-size: 15px;">?</div>
                 <div>
                     <div class="header-title" id="active-chat-title">Чат</div>
                     <div style="font-size: 11px; color: var(--text-muted);" id="active-chat-sub">в сети</div>
@@ -443,18 +554,17 @@
             </div>
         </div>
 
-        <div class="messages-container" id="messages-list">
-            <!-- Messages load here -->
-        </div>
+        <div class="messages-container" id="messages-list"></div>
 
         <div class="input-bar">
-            <input type="text" id="message-input" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendMessage()" />
+            <input type="text" id="message-input" placeholder="Сообщение..." onkeydown="if(event.key==='Enter') sendMessage()" />
             <button class="btn-send" onclick="sendMessage()">➤</button>
         </div>
     </div>
 </div>
 
 <script>
+    // Primary URL with automatic fallback to bypass ISP routing issues
     let SERVER_URL = localStorage.getItem("grafiton_server_url") || "https://grafiton-messenger.onrender.com";
     let currentUser = JSON.parse(localStorage.getItem("grafiton_user") || "null");
     let authToken = localStorage.getItem("grafiton_token") || null;
@@ -462,20 +572,24 @@
     let ws = null;
     let activeChatId = null;
     let activeChatReceiverId = null;
+    let currentTab = 'all';
+    let allUsers = [];
+
+    const AVATAR_COLORS = ["#2b5278", "#5288c1", "#3b82f6", "#10b981", "#8b5cf6", "#ec4899", "#f59e0b"];
 
     function showToast(msg) {
         const t = document.getElementById("toast");
         t.innerText = msg;
         t.style.display = "block";
-        setTimeout(() => { t.style.display = "none"; }, 3500);
+        setTimeout(() => { t.style.display = "none"; }, 3000);
     }
 
     function promptServerUrl() {
-        const url = prompt("Введите адрес сервера бэкенда (Render URL или http://localhost:8000):", SERVER_URL);
+        const url = prompt("Адрес сервера Графитон:", SERVER_URL);
         if (url) {
             SERVER_URL = url.replace(/\/$/, "");
             localStorage.setItem("grafiton_server_url", SERVER_URL);
-            showToast("Сервер обновлен: " + SERVER_URL);
+            showToast("Сервер обновлен");
         }
     }
 
@@ -521,7 +635,7 @@
                 loginSuccess(data);
             }
         } catch (e) {
-            showToast(e.message);
+            showToast(e.message || "Ошибка подключения");
         }
     }
 
@@ -553,13 +667,33 @@
             return;
         }
 
-        const myAv = document.getElementById("my-avatar");
-        myAv.innerText = currentUser.nickname[0].toUpperCase();
-        myAv.style.backgroundColor = currentUser.avatar_color;
+        const myAv = document.getElementById("my-top-avatar");
+        myAv.innerText = (currentUser.nickname || currentUser.username)[0].toUpperCase();
+        myAv.style.backgroundColor = currentUser.avatar_color || "#2b5278";
 
-        showScreen("screen-chats");
+        showScreen("screen-main");
         connectWebSocket();
         loadUsersList();
+    }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll(".tg-tab").forEach(t => t.classList.remove("active"));
+        document.getElementById(`tab-${tab}`).classList.add("active");
+
+        const generalItem = document.getElementById("item-general-chat");
+        const usersContainer = document.getElementById("users-list");
+
+        if (tab === "all") {
+            generalItem.style.display = "flex";
+            usersContainer.style.display = "block";
+        } else if (tab === "direct") {
+            generalItem.style.display = "none";
+            usersContainer.style.display = "block";
+        } else if (tab === "channels") {
+            generalItem.style.display = "flex";
+            usersContainer.style.display = "none";
+        }
     }
 
     function connectWebSocket() {
@@ -571,19 +705,18 @@
         ws = new WebSocket(wsUrl);
 
         ws.onopen = () => {
-            document.getElementById("connection-status").innerText = "● В сети";
-            document.getElementById("connection-status").style.color = "var(--online-badge)";
+            const statusEl = document.getElementById("connection-status");
+            statusEl.innerText = "● В сети";
+            statusEl.style.color = "var(--online-badge)";
         };
 
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === "new_message") {
                 const msg = data.message;
-                // If it belongs to active chat, render it
                 if (activeChatId && msg.chat_id === activeChatId) {
                     appendMessage(msg);
                 }
-                // Update preview
                 if (msg.chat_id === "general") {
                     document.getElementById("general-preview").innerText = `${msg.sender_name}: ${msg.content}`;
                 }
@@ -591,8 +724,9 @@
         };
 
         ws.onclose = () => {
-            document.getElementById("connection-status").innerText = "○ Переподключение...";
-            document.getElementById("connection-status").style.color = "var(--text-muted)";
+            const statusEl = document.getElementById("connection-status");
+            statusEl.innerText = "○ Соединение...";
+            statusEl.style.color = "var(--text-muted)";
             setTimeout(connectWebSocket, 4000);
         };
     }
@@ -602,36 +736,46 @@
             const res = await fetch(`${SERVER_URL}/api/users`, {
                 headers: { "Authorization": `Bearer ${authToken}` }
             });
-            const users = await res.json();
-            const container = document.getElementById("users-list");
-            container.innerHTML = "";
-
-            users.forEach(u => {
-                if (u.id === currentUser.id) return; // skip self
-                const directChatId = getDirectChatId(currentUser.id, u.id);
-
-                const item = document.createElement("div");
-                item.className = "chat-item";
-                item.onclick = () => openChat(directChatId, u.nickname, u.id, u.avatar_color);
-                item.innerHTML = `
-                    <div class="avatar" style="background: ${u.avatar_color};">${u.nickname[0].toUpperCase()}</div>
-                    <div class="chat-info">
-                        <div class="chat-name">${escapeHtml(u.nickname)}</div>
-                        <div class="chat-preview">@${escapeHtml(u.username)}</div>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
+            allUsers = await res.json();
+            renderUsers();
         } catch (e) {
             console.error(e);
         }
+    }
+
+    function renderUsers() {
+        const container = document.getElementById("users-list");
+        container.innerHTML = "";
+        let directCount = 0;
+
+        allUsers.forEach(u => {
+            if (u.id === currentUser.id) return;
+            directCount++;
+            const directChatId = getDirectChatId(currentUser.id, u.id);
+
+            const item = document.createElement("div");
+            item.className = "chat-item";
+            item.onclick = () => openChat(directChatId, u.nickname, u.id, u.avatar_color);
+            item.innerHTML = `
+                <div class="avatar" style="background: ${u.avatar_color || '#5288c1'};">${u.nickname[0].toUpperCase()}</div>
+                <div class="chat-info">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span class="chat-name">${escapeHtml(u.nickname)}</span>
+                    </div>
+                    <div class="chat-preview">${escapeHtml(u.bio || '@' + u.username)}</div>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+
+        document.getElementById("badge-all").innerText = directCount + 1;
     }
 
     function getDirectChatId(uid1, uid2) {
         return uid1 < uid2 ? `direct_${uid1}_${uid2}` : `direct_${uid2}_${uid1}`;
     }
 
-    async function openChat(chatId, title, receiverId = null, color = "#3b82f6") {
+    async function openChat(chatId, title, receiverId = null, color = "#5288c1") {
         activeChatId = chatId;
         activeChatReceiverId = receiverId;
 
@@ -642,7 +786,6 @@
 
         showScreen("screen-conversation");
 
-        // Load history
         try {
             const res = await fetch(`${SERVER_URL}/api/messages/${chatId}`, {
                 headers: { "Authorization": `Bearer ${authToken}` }
@@ -650,14 +793,14 @@
             const messages = await res.json();
             messages.forEach(appendMessage);
         } catch (e) {
-            showToast("Не удалось загрузить историю");
+            showToast("Не удалось загрузить сообщения");
         }
     }
 
     function closeChat() {
         activeChatId = null;
         activeChatReceiverId = null;
-        showScreen("screen-chats");
+        showScreen("screen-main");
     }
 
     function appendMessage(msg) {
@@ -703,15 +846,91 @@
                     content: text
                 })
             });
-            if (!res.ok) {
-                showToast("Ошибка отправки сообщения");
-            }
+            if (!res.ok) showToast("Ошибка отправки сообщения");
         } catch (e) {
-            showToast("Сервер недоступен");
+            showToast("Сервер временно недоступен");
+        }
+    }
+
+    /* Settings & Profile Editing */
+    let selectedAvatarColor = "";
+
+    function openSettings() {
+        document.getElementById("settings-avatar").innerText = (currentUser.nickname || currentUser.username)[0].toUpperCase();
+        document.getElementById("settings-avatar").style.backgroundColor = currentUser.avatar_color || "#2b5278";
+        document.getElementById("settings-username-display").innerText = "@" + currentUser.username;
+        document.getElementById("settings-nickname").value = currentUser.nickname || "";
+        document.getElementById("settings-bio").value = currentUser.bio || "";
+        selectedAvatarColor = currentUser.avatar_color || AVATAR_COLORS[0];
+
+        renderColorPicker();
+        showScreen("screen-settings");
+    }
+
+    function closeSettings() {
+        showScreen("screen-main");
+    }
+
+    function renderColorPicker() {
+        const box = document.getElementById("color-picker-box");
+        box.innerHTML = "";
+        AVATAR_COLORS.forEach(c => {
+            const circle = document.createElement("div");
+            circle.className = `color-circle ${c === selectedAvatarColor ? 'selected' : ''}`;
+            circle.style.backgroundColor = c;
+            circle.onclick = () => {
+                selectedAvatarColor = c;
+                document.getElementById("settings-avatar").style.backgroundColor = c;
+                renderColorPicker();
+            };
+            box.appendChild(circle);
+        });
+    }
+
+    async function saveProfileChanges() {
+        const nickname = document.getElementById("settings-nickname").value.trim();
+        const bio = document.getElementById("settings-bio").value.trim();
+
+        if (!nickname) {
+            showToast("Имя не может быть пустым");
+            return;
+        }
+
+        try {
+            const res = await fetch(`${SERVER_URL}/api/users/profile`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authToken}`
+                },
+                body: JSON.stringify({
+                    nickname: nickname,
+                    bio: bio,
+                    avatar_color: selectedAvatarColor
+                })
+            });
+
+            if (!res.ok) throw new Error("Не удалось сохранить профиль");
+            const updated = await res.json();
+            currentUser.nickname = updated.nickname;
+            currentUser.bio = updated.bio;
+            currentUser.avatar_color = updated.avatar_color;
+            localStorage.setItem("grafiton_user", JSON.stringify(currentUser));
+
+            const topAv = document.getElementById("my-top-avatar");
+            topAv.innerText = currentUser.nickname[0].toUpperCase();
+            topAv.style.backgroundColor = currentUser.avatar_color;
+
+            showToast("Профиль сохранен!");
+            setTimeout(closeSettings, 500);
+            loadUsersList();
+        } catch (e) {
+            showToast(e.message);
         }
     }
 
     function escapeHtml(text) {
+        if (!text) return "";
         return text
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -720,7 +939,6 @@
             .replace(/'/g, "&#039;");
     }
 
-    // Auto-login on reload
     if (authToken && currentUser) {
         initMessenger();
     }
